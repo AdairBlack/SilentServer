@@ -1,5 +1,16 @@
 # SilentServer
+
+Silent Dust is silent.
+
 ------------------------
+#### Getting Started
 
-Silent Dust is silent today.
++ Linux
 
+```
+    make
+    ./bin/SilentServer
+```
+
+
+     
