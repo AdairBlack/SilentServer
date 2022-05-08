@@ -13,6 +13,8 @@
 
 #include "WebServer.hpp"
 
+bool isStop = false;
+
 SocketServer::WebServer::WebServer(char *ip_, int port_, int backlog_):
                     ip(ip_), port(port_), backlog(backlog_)
 {
@@ -56,10 +58,13 @@ int SocketServer::WebServer::Start()
         printf("Error: Listening! errno: %d\n", errno);
     }
 
-    while(1)
+    while(!isStop)
     {
         sleep(1);
     }
+
+    printf("SilentServer closed by receiving signal.\n");
+    close(socketFd);
 
     return 0;
 }

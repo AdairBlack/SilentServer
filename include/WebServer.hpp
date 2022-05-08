@@ -1,5 +1,3 @@
-
-
 namespace SocketServer{
 
 class WebServer{

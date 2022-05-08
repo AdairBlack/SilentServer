@@ -11,6 +11,13 @@
 #include <cstring>
 
 #include "WebServer.hpp"
+extern bool isStop;
+
+static void HandleTerm(int sig)
+{
+    isStop = true;
+}
+
 
 int main(int argc, char **argv)
 {
@@ -19,6 +26,8 @@ int main(int argc, char **argv)
     printf("*                                       *\n");
     printf("*              By  Edgar                *\n");
     printf("*****************************************\n");
+
+    signal(SIGTERM, HandleTerm);
 
     char ip[20] = {0};
     strncpy(ip, "192.168.0.10", sizeof("192.168.0.10\0"));
