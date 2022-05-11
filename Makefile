@@ -24,6 +24,6 @@ ${DIR_OBJ}/%.o:${DIR_SRC}/%.cpp
 .PHONY:clean
 
 clean:
-	rm -rf ./${DIR_OBJ}/*
-	rm -rf ./${DIR_BIN}/*
+	rm -rf ${DIR_OBJ}/*
+	rm -rf ${DIR_BIN}/*
 	

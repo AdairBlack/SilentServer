@@ -19,8 +19,8 @@ SocketServer::WebServer::WebServer(char *ip_, int port_, int backlog_):
                     ip(ip_), port(port_), backlog(backlog_)
 {
     printf("WebServer starts......\n");
-    printf("IP: %s\n",ip);
-    printf("PORT: %d\n", port);        
+    printf("IP:      %s\n",ip);
+    printf("PORT:    %d\n", port);        
     printf("BACKLOG: %d\n", backlog);   
     printf("*****************************************\n");
 
