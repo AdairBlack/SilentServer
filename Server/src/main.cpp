@@ -13,9 +13,10 @@
 #include <sys/ioctl.h>
 #include <net/if.h>
 
-#include "WebServer.hpp"
+#include "SocketServer.hpp"
 #define IP_CHAR_MAX_LEN       (16)
 #define LOCAL_ETH_INERFACE    ("enp0s31f6\0")
+#define LOCAL_PORT_NUM        (7777)
 
 
 extern bool isStop;
@@ -90,9 +91,9 @@ int main(int argc, char **argv)
         printf("Error:[%s %d %s()] Get local ip failed!", __FILE__, __LINE__, __func__);
     }
 
-    SocketServer::WebServer webServer(ip, 7777, 5);
+    WebServer::SocketServer socketServer(ip, LOCAL_PORT_NUM, 5);
 
-    webServer.Start();
+    socketServer.Start();
 
     return 0;
 

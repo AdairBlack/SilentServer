@@ -7,10 +7,19 @@ Silent Dust is silent.
 
 + Linux
 
+A web server.
+
 ```
-    make
-    ./bin/SilentServer
+~$ cd Server
+~$ make
+~$ ./bin/SilentServer
 ```
 
+A web client.
+```
+~$ cd Client
+~$ make
+~$ ./bin/SilentClient
+```
 
      

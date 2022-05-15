@@ -11,11 +11,11 @@
 #include <cstring>
 #include <errno.h>
 
-#include "WebServer.hpp"
+#include "SocketServer.hpp"
 
 bool isStop = false;
 
-SocketServer::WebServer::WebServer(char *ip_, int port_, int backlog_):
+WebServer::SocketServer::SocketServer(char *ip_, int port_, int backlog_):
                     ip(ip_), port(port_), backlog(backlog_)
 {
     printf("WebServer starts......\n");
@@ -50,7 +50,7 @@ SocketServer::WebServer::WebServer(char *ip_, int port_, int backlog_):
     return ;
 }
 
-int SocketServer::WebServer::Start()
+int WebServer::SocketServer::Start()
 {
     int ret = listen(socketFd, backlog);
     if(-1 == ret)

@@ -1,8 +1,9 @@
-namespace SocketServer{
+namespace WebServer{
 
-class WebServer{
+class SocketServer{
 public:
-    WebServer(
+    SocketServer = delete;
+    SocketServer(
         char *ip_, int port_, int backlog_ 
     );
 
