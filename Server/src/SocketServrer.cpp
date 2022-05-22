@@ -56,7 +56,32 @@ int WebServer::SocketServer::Start()
     if(-1 == ret)
     {
         printf("Error: Listening! errno: %d\n", errno);
+        return -1;
     }
+
+    clientAddrLen = sizeof(clientAddress);
+    int connfd = accept(socketFd, (struct sockaddr*) &clientAddress, &clientAddrLen);
+    if(0 > connfd)
+    {
+        DEBUG_PRINT("errno: %d", errno);
+        return -1;
+    }
+
+    char buffer[BUFFER_SIZE];
+
+    memset(buffer, '\0', BUFFER_SIZE);
+    ret = recv(connfd, buffer, BUFFER_SIZE - 1, 0);
+    printf("got %d bytes of normal data '%s'\n", ret, buffer);
+
+    memset(buffer, '\0', BUFFER_SIZE);
+    ret = recv(connfd, buffer, BUFFER_SIZE - 1, MSG_OOB);
+    printf("got %d bytes of normal data '%s'\n", ret, buffer);
+
+    memset(buffer, '\0', BUFFER_SIZE);
+    ret = recv(connfd, buffer, BUFFER_SIZE - 1, 0);
+    printf("got %d bytes of normal data '%s'\n", ret, buffer);
+
+    close(connfd);
 
     while(!isStop)
     {
@@ -68,3 +93,8 @@ int WebServer::SocketServer::Start()
 
     return 0;
 }
+
+// int WebServer::SocketServer::ReceiveData()
+// {
+
+// }

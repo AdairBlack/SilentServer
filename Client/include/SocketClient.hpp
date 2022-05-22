@@ -26,7 +26,7 @@ private:
     struct sockaddr_in serverIpv4Address;
     int socketFd;
 
-    int SendData(const char *, size_t);
+    int SendData(const char *, size_t, int);
 };
 
 }
