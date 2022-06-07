@@ -39,6 +39,7 @@ WebClient::SocketClient::SocketClient(char *ip_, int port_, int backlog_):
     inet_pton(AF_INET, ip, &serverIpv4Address.sin_addr);
     serverIpv4Address.sin_port = htons(port);
 
+    //Connect
     if(0 != connect(socketFd, (struct sockaddr*) &serverIpv4Address, sizeof(serverIpv4Address)))
     {
         printf("Error: Connect server socket! errno: %d\n", errno);
