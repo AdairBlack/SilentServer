@@ -15,53 +15,52 @@
 
 bool isStop = false;
 
-WebServer::SocketServer::SocketServer(char *ip_, int port_, int backlog_):
-                    ip(ip_), port(port_), backlog(backlog_)
+WebServer::SocketServer::SocketServer(char *ip_, int port_, int backlog_) : ip(ip_), port(port_), backlog(backlog_)
 {
     printf("WebServer starts......\n");
-    printf("IP:      %s\n",ip);
-    printf("PORT:    %d\n", port);        
-    printf("BACKLOG: %d\n", backlog);   
+    printf("IP:      %s\n", ip);
+    printf("PORT:    %d\n", port);
+    printf("BACKLOG: %d\n", backlog);
     printf("*****************************************\n");
 
-    //Open Socket
+    // Open Socket
     socketFd = socket(PF_INET, SOCK_STREAM, 0);
-    if(-1 == socketFd)
+    if (-1 == socketFd)
     {
         printf("Error: Creating sockfd failed! errno: %d\n", errno);
-        return ;
+        return;
     }
     printf("SocketFd: %d", socketFd);
 
-    //Set ip data
+    // Set ip data
     bzero(&ipv4Address, sizeof(ipv4Address));
     ipv4Address.sin_family = AF_INET;
     inet_pton(AF_INET, ip, &ipv4Address.sin_addr);
     ipv4Address.sin_port = htons(port);
 
-    //Bind socket fd to ip
-    int ret = bind(socketFd, (struct sockaddr*)&ipv4Address, sizeof(ipv4Address));
-    if(-1 == ret)
+    // Bind socket fd to ip
+    int ret = bind(socketFd, (struct sockaddr *)&ipv4Address, sizeof(ipv4Address));
+    if (-1 == ret)
     {
         printf("Error: Binding sockfd to ip failed! errno: %d\n", errno);
-        return ;
+        return;
     }
 
-    return ;
+    return;
 }
 
 int WebServer::SocketServer::Start()
 {
     int ret = listen(socketFd, backlog);
-    if(-1 == ret)
+    if (-1 == ret)
     {
         printf("Error: Listening! errno: %d\n", errno);
         return -1;
     }
 
     clientAddrLen = sizeof(clientAddress);
-    int connfd = accept(socketFd, (struct sockaddr*) &clientAddress, &clientAddrLen);
-    if(0 > connfd)
+    int connfd = accept(socketFd, (struct sockaddr *)&clientAddress, &clientAddrLen);
+    if (0 > connfd)
     {
         DEBUG_PRINT("errno: %d", errno);
         return -1;
@@ -83,7 +82,7 @@ int WebServer::SocketServer::Start()
 
     close(connfd);
 
-    while(!isStop)
+    while (!isStop)
     {
         sleep(1);
     }

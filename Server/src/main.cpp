@@ -14,10 +14,9 @@
 #include <net/if.h>
 
 #include "SocketServer.hpp"
-#define IP_CHAR_MAX_LEN       (16)
-#define LOCAL_ETH_INERFACE    ("enp0s31f6\0")
-#define LOCAL_PORT_NUM        (7777)
-
+#define IP_CHAR_MAX_LEN (16)
+#define LOCAL_ETH_INERFACE ("enp0s31f6\0")
+#define LOCAL_PORT_NUM (7777)
 
 extern bool isStop;
 
@@ -29,7 +28,7 @@ static void HandleTerm(int sig)
 static int GetLocalIp(char ip[IP_CHAR_MAX_LEN])
 {
     printf("Get local eth intfs...\n");
-    if(nullptr == ip)
+    if (nullptr == ip)
     {
         printf("Error:[%s %d %s()] nullptr!!!", __FILE__, __LINE__, __func__);
         return -1;
@@ -39,11 +38,11 @@ static int GetLocalIp(char ip[IP_CHAR_MAX_LEN])
     struct ifconf ifconf;
     struct ifreq *pIfreq;
     char buf[512];
-    
+
     ifconf.ifc_len = 512;
     ifconf.ifc_buf = buf;
 
-    if((sockfd = socket(PF_INET, SOCK_DGRAM, 0)) < 0)
+    if ((sockfd = socket(PF_INET, SOCK_DGRAM, 0)) < 0)
     {
         perror("socket");
         return -1;
@@ -51,20 +50,20 @@ static int GetLocalIp(char ip[IP_CHAR_MAX_LEN])
 
     ioctl(sockfd, SIOCGIFCONF, &ifconf);
 
-    pIfreq = (struct ifreq*)ifconf.ifc_buf;
+    pIfreq = (struct ifreq *)ifconf.ifc_buf;
 
-    for(int i = (ifconf.ifc_len/sizeof(struct ifreq)); i > 0; i--)
+    for (int i = (ifconf.ifc_len / sizeof(struct ifreq)); i > 0; i--)
     {
-        if(AF_INET == pIfreq->ifr_flags)
+        if (AF_INET == pIfreq->ifr_flags)
         {
-            if(!strncmp(pIfreq->ifr_name, LOCAL_ETH_INERFACE, sizeof(LOCAL_ETH_INERFACE)))
+            if (!strncmp(pIfreq->ifr_name, LOCAL_ETH_INERFACE, sizeof(LOCAL_ETH_INERFACE)))
             {
-                strncpy(ip, inet_ntoa(((struct sockaddr_in*)&(pIfreq->ifr_addr))->sin_addr), IP_CHAR_MAX_LEN);
+                strncpy(ip, inet_ntoa(((struct sockaddr_in *)&(pIfreq->ifr_addr))->sin_addr), IP_CHAR_MAX_LEN);
             }
 
             printf("-------------\n");
             printf("name = [%s]\n", pIfreq->ifr_name);
-            printf("addr = [%s]\n", inet_ntoa(((struct sockaddr_in*)&(pIfreq->ifr_addr))->sin_addr));
+            printf("addr = [%s]\n", inet_ntoa(((struct sockaddr_in *)&(pIfreq->ifr_addr))->sin_addr));
             pIfreq++;
         }
     }
@@ -72,7 +71,6 @@ static int GetLocalIp(char ip[IP_CHAR_MAX_LEN])
 
     return 0;
 }
-
 
 int main(int argc, char **argv)
 {
@@ -86,7 +84,7 @@ int main(int argc, char **argv)
 
     signal(SIGTERM, HandleTerm);
 
-    if(0 != GetLocalIp(ip))
+    if (0 != GetLocalIp(ip))
     {
         printf("Error:[%s %d %s()] Get local ip failed!", __FILE__, __LINE__, __func__);
     }
@@ -96,5 +94,4 @@ int main(int argc, char **argv)
     socketServer.Start();
 
     return 0;
-
 }

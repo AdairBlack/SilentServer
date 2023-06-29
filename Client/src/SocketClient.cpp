@@ -15,55 +15,53 @@
 
 bool isStop = false;
 
-WebClient::SocketClient::SocketClient(char *ip_, int port_, int backlog_):
-                    ip(ip_), port(port_), backlog(backlog_)
+WebClient::SocketClient::SocketClient(char *ip_, int port_, int backlog_) : ip(ip_), port(port_), backlog(backlog_)
 {
     printf("WebServer starts......\n");
-    printf("IP:      %s\n",ip);
-    printf("PORT:    %d\n", port);        
-    printf("BACKLOG: %d\n", backlog);   
+    printf("IP:      %s\n", ip);
+    printf("PORT:    %d\n", port);
+    printf("BACKLOG: %d\n", backlog);
     printf("*****************************************\n");
 
-    //Open Socket
+    // Open Socket
     socketFd = socket(PF_INET, SOCK_STREAM, 0);
-    if(-1 == socketFd)
+    if (-1 == socketFd)
     {
         printf("Error: Creating sockfd failed! errno: %d\n", errno);
-        return ;
+        return;
     }
     printf("SocketFd: %d", socketFd);
 
-    //Set ip data
+    // Set ip data
     bzero(&serverIpv4Address, sizeof(serverIpv4Address));
     serverIpv4Address.sin_family = AF_INET;
     inet_pton(AF_INET, ip, &serverIpv4Address.sin_addr);
     serverIpv4Address.sin_port = htons(port);
 
-    //Connect
-    if(0 != connect(socketFd, (struct sockaddr*) &serverIpv4Address, sizeof(serverIpv4Address)))
+    // Connect
+    if (0 != connect(socketFd, (struct sockaddr *)&serverIpv4Address, sizeof(serverIpv4Address)))
     {
         printf("Error: Connect server socket! errno: %d\n", errno);
-        return ;
+        return;
     }
 
-    return ;
+    return;
 }
 
 int WebClient::SocketClient::SendData(const char *data, size_t dataSize, int flags)
 {
-    if(nullptr == data)
+    if (nullptr == data)
     {
         printf("Error: nullptr data!\n");
     }
 
-    if(-1 == send(socketFd, data, dataSize, flags))
+    if (-1 == send(socketFd, data, dataSize, flags))
     {
         DEBUG_PRINT("Creating sockfd failed! errno: %d.\n", errno);
         return -1;
     }
 
     return 0;
-
 }
 
 int WebClient::SocketClient::Start()
@@ -86,5 +84,5 @@ int WebClient::SocketClient::Start()
 WebClient::SocketClient::~SocketClient()
 {
     close(socketFd);
-    return ;
+    return;
 }
