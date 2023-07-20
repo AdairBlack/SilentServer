@@ -91,7 +91,7 @@ int main(int argc, char **argv)
 
     WebServer::SocketServer socketServer(ip, LOCAL_PORT_NUM, 5);
 
-    socketServer.Start();
+    socketServer.start();
 
     return 0;
 }

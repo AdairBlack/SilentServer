@@ -30,7 +30,8 @@ WebClient::SocketClient::SocketClient(char *ip_, int port_, int backlog_) : ip(i
         printf("Error: Creating sockfd failed! errno: %d\n", errno);
         return;
     }
-    printf("SocketFd: %d", socketFd);
+    printf("SocketFd: %d\n", socketFd);
+    printf("*****************************************\n");
 
     // Set ip data
     bzero(&serverIpv4Address, sizeof(serverIpv4Address));
@@ -55,6 +56,8 @@ int WebClient::SocketClient::SendData(const char *data, size_t dataSize, int fla
         printf("Error: nullptr data!\n");
     }
 
+    printf("Sending data: %s\n", data);
+
     if (-1 == send(socketFd, data, dataSize, flags))
     {
         DEBUG_PRINT("Creating sockfd failed! errno: %d.\n", errno);
@@ -72,9 +75,9 @@ int WebClient::SocketClient::Start()
 
     printf("Client:Begin to send data.\n");
 
-    SendData(dataSecond, strlen(dataSecond), 0);
-    SendData(dataFirst, strlen(dataFirst), MSG_OOB);
-    SendData(dataSecond, strlen(dataSecond), 0);
+    SendData(dataFirst, strlen(dataFirst), 0);
+    SendData(dataSecond, strlen(dataSecond), MSG_OOB);
+    //  SendData(dataSecond, strlen(dataSecond), 0);
 
     printf("Client:Finished sending data.\n");
 

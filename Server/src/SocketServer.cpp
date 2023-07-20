@@ -30,7 +30,8 @@ WebServer::SocketServer::SocketServer(char *ip_, int port_, int backlog_) : ip(i
         printf("Error: Creating sockfd failed! errno: %d\n", errno);
         return;
     }
-    printf("SocketFd: %d", socketFd);
+    printf("SocketFd: %d\n", socketFd);
+    printf("*****************************************\n");
 
     // Set ip data
     bzero(&ipv4Address, sizeof(ipv4Address));
@@ -49,46 +50,45 @@ WebServer::SocketServer::SocketServer(char *ip_, int port_, int backlog_) : ip(i
     return;
 }
 
-int WebServer::SocketServer::Start()
+int WebServer::SocketServer::start()
 {
-    int ret = listen(socketFd, backlog);
-    if (-1 == ret)
-    {
-        printf("Error: Listening! errno: %d\n", errno);
-        return -1;
-    }
-
-    clientAddrLen = sizeof(clientAddress);
-    int connfd = accept(socketFd, (struct sockaddr *)&clientAddress, &clientAddrLen);
-    if (0 > connfd)
-    {
-        DEBUG_PRINT("errno: %d", errno);
-        return -1;
-    }
-
+    int ret = 0;
+    int connfd = 0;
     char buffer[BUFFER_SIZE];
-
-    memset(buffer, '\0', BUFFER_SIZE);
-    ret = recv(connfd, buffer, BUFFER_SIZE - 1, 0);
-    printf("got %d bytes of normal data '%s'\n", ret, buffer);
-
-    memset(buffer, '\0', BUFFER_SIZE);
-    ret = recv(connfd, buffer, BUFFER_SIZE - 1, MSG_OOB);
-    printf("got %d bytes of normal data '%s'\n", ret, buffer);
-
-    memset(buffer, '\0', BUFFER_SIZE);
-    ret = recv(connfd, buffer, BUFFER_SIZE - 1, 0);
-    printf("got %d bytes of normal data '%s'\n", ret, buffer);
-
-    close(connfd);
 
     while (!isStop)
     {
+        ret = listen(socketFd, backlog);
+        if (-1 == ret)
+        {
+            DEBUG_PRINT("Error: Listening! errno: %d\n", errno);
+            return -1;
+        }
+
+        clientAddrLen = sizeof(clientAddress);
+        connfd = accept(socketFd, (struct sockaddr *)&clientAddress, &clientAddrLen);
+        if (0 > connfd)
+        {
+            DEBUG_PRINT("errno: %d", errno);
+            return -1;
+        }
+
+        memset(buffer, '\0', BUFFER_SIZE);
+        ret = recv(connfd, buffer, BUFFER_SIZE - 1, 0);
+        DEBUG_PRINT("[Normal]got %d bytes of normal data '%s'\n", ret, buffer);
         sleep(1);
+
+        memset(buffer, '\0', BUFFER_SIZE);
+        ret = recv(connfd, buffer, BUFFER_SIZE - 1, MSG_OOB);
+        DEBUG_PRINT("[MSG_OOB]got %d bytes of normal data '%s'\n", ret, buffer);
+        sleep(1);
+
+        close(connfd);
     }
 
-    printf("SilentServer closed by receiving signal.\n");
     close(socketFd);
+
+    DEBUG_PRINT("%s", "SilentServer closed by receiving signal.\n");
 
     return 0;
 }
