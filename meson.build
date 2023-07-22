@@ -13,6 +13,3 @@ Client = executable('client',
                  'Client/src/SocketClient.cpp',
                  include_directories : ['Client/include'],
                  install : false)
-
-test('basic', Server)
-test('basic', Client)

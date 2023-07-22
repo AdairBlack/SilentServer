@@ -52,6 +52,7 @@ WebServer::SocketServer::SocketServer(char *ip_, int port_, int backlog_) : ip(i
 
 int WebServer::SocketServer::start()
 {
+    printf("%s\n", __func__);
     int ret = 0;
     int connfd = 0;
     char buffer[BUFFER_SIZE];
@@ -75,12 +76,12 @@ int WebServer::SocketServer::start()
 
         memset(buffer, '\0', BUFFER_SIZE);
         ret = recv(connfd, buffer, BUFFER_SIZE - 1, 0);
-        DEBUG_PRINT("[Normal]got %d bytes of normal data '%s'\n", ret, buffer);
+        printf("[Normal]got %d bytes of normal data '%s'\n", ret, buffer);
         sleep(1);
 
         memset(buffer, '\0', BUFFER_SIZE);
         ret = recv(connfd, buffer, BUFFER_SIZE - 1, MSG_OOB);
-        DEBUG_PRINT("[MSG_OOB]got %d bytes of normal data '%s'\n", ret, buffer);
+        printf("[MSG_OOB]got %d bytes of normal data '%s'\n", ret, buffer);
         sleep(1);
 
         close(connfd);
@@ -88,7 +89,7 @@ int WebServer::SocketServer::start()
 
     close(socketFd);
 
-    DEBUG_PRINT("%s", "SilentServer closed by receiving signal.\n");
+    printf("SilentServer closed by receiving signal.\n");
 
     return 0;
 }
