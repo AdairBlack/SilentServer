@@ -5,6 +5,8 @@ project('SilentServer', 'cpp',
 Server = executable('server', 
                  'Server/src/main.cpp',
                  'Server/src/SocketServer.cpp',
+                 'Server/src/SocketWrapper.cpp',
+                 'Server/src/Utils.cpp',
                  include_directories : ['Server/include'],
                  install : false)
 

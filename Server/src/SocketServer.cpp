@@ -4,13 +4,13 @@
 #include <sys/socket.h>
 #include <netinet/in.h>
 #include <arpa/inet.h>
-#include <signal.h>
 #include <unistd.h>
 #include <cstdlib>
 #include <cassert>
 #include <cstring>
 #include <errno.h>
 
+#include "Utils.hpp"
 #include "SocketServer.hpp"
 
 bool isStop = false;

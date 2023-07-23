@@ -1,7 +1,4 @@
 #pragma once
-
-#include "Utils.hpp"
-
 namespace WebServer
 {
 
@@ -29,4 +26,4 @@ namespace WebServer
         // int ReceiveData();
     };
 
-}
+} // namespace WebServer
