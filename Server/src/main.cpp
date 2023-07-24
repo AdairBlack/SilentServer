@@ -16,9 +16,6 @@
 #include "Utils.hpp"
 #include "SocketServer.hpp"
 
-#define LOCAL_ETH_INERFACE ("enp0s31f6\0")
-#define LOCAL_PORT_NUM (7777)
-
 extern bool isStop;
 
 static void HandleTerm(int sig)

@@ -76,8 +76,6 @@ int WebClient::SocketClient::Start()
     printf("Client:Begin to send data.\n");
 
     SendData(dataFirst, strlen(dataFirst), 0);
-    // SendData(dataSecond, strlen(dataSecond), MSG_OOB);
-    //   SendData(dataSecond, strlen(dataSecond), 0);
 
     printf("Client:Finished sending data.\n");
 

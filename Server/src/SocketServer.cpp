@@ -28,6 +28,7 @@ WebServer::SocketServer::SocketServer(char *ip_, int port_, int backlog_) : ip(i
     if (-1 == socketFd)
     {
         printf("Error: Creating sockfd failed! errno: %d\n", errno);
+        strerror(errno);
         return;
     }
     printf("SocketFd: %d\n", socketFd);
@@ -77,11 +78,6 @@ int WebServer::SocketServer::start()
         memset(buffer, '\0', BUFFER_SIZE);
         ret = recv(connfd, buffer, BUFFER_SIZE - 1, 0);
         printf("[Normal]got %d bytes of normal data '%s'\n", ret, buffer);
-        sleep(1);
-
-        memset(buffer, '\0', BUFFER_SIZE);
-        ret = recv(connfd, buffer, BUFFER_SIZE - 1, MSG_OOB);
-        printf("[MSG_OOB]got %d bytes of normal data '%s'\n", ret, buffer);
         sleep(1);
 
         close(connfd);
