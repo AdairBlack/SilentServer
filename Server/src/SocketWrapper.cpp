@@ -15,15 +15,29 @@
 
 #include "SocketWrapper.hpp"
 
-WebServer::Utils::SocketWrapper::SocketWrapper(int socketFd_) : socketFd(socketFd_)
+WebServer::Utils::SocketWrapper::SocketWrapper(char *ip_, int port_, int backlog_) : ip(ip_), port(port_), backlog(backlog_)
 {
+    printf("Socket constructed......\n");
+    printf("IP:      %s\n", ip);
+    printf("PORT:    %d\n", port);
+    printf("BACKLOG: %d\n", backlog);
+    printf("*****************************************\n");
+
+    // Open Socket
+    socketFd = socket(PF_INET, SOCK_STREAM, 0);
+    if (-1 == socketFd)
+    {
+        printf("Error: Creating sockfd failed! errno: %d\n", errno);
+        strerror(errno);
+        return;
+    }
     printf("SocketFd: %d\n", socketFd);
     printf("*****************************************\n");
+
+    return;
 }
 
 WebServer::Utils::SocketWrapper::~SocketWrapper()
 {
-    printf("SocketFd: %d\n", socketFd);
-    printf("*****************************************\n");
     close(socketFd);
 }

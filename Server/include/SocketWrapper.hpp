@@ -7,10 +7,13 @@ namespace WebServer
         class SocketWrapper
         {
         public:
-            SocketWrapper(int socketFd_);
+            SocketWrapper(char *ip_, int port_, int backlog_);
             ~SocketWrapper();
 
         private:
+            char *ip;
+            int port;
+            int backlog;
             int socketFd;
         };
     } // namespace Utils
