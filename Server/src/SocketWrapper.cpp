@@ -37,6 +37,12 @@ WebServer::Utils::SocketWrapper::SocketWrapper(char *ip_, int port_, int backlog
     return;
 }
 
+int WebServer::Utils::SocketWrapper::start()
+{
+    printf("%s\n", __func__);
+    return 0;
+}
+
 WebServer::Utils::SocketWrapper::~SocketWrapper()
 {
     close(socketFd);

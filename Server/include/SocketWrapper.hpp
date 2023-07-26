@@ -7,8 +7,10 @@ namespace WebServer
         class SocketWrapper
         {
         public:
-            SocketWrapper(char *ip_, int port_, int backlog_);
+            explicit SocketWrapper(char *ip_, int port_, int backlog_);
             ~SocketWrapper();
+
+            int bind();
 
         private:
             char *ip;
