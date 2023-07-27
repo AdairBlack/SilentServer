@@ -10,13 +10,15 @@ namespace WebServer
             explicit SocketWrapper(char *ip_, int port_, int backlog_);
             ~SocketWrapper();
 
-            int bind();
+            int socketBind();
 
         private:
             char *ip;
             int port;
             int backlog;
+
             int socketFd;
+            struct sockaddr_in ipv4Address;
         };
     } // namespace Utils
 } // namespace WebServer

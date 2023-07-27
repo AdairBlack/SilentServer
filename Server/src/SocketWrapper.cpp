@@ -37,9 +37,21 @@ WebServer::Utils::SocketWrapper::SocketWrapper(char *ip_, int port_, int backlog
     return;
 }
 
-int WebServer::Utils::SocketWrapper::start()
+int WebServer::Utils::SocketWrapper::socketBind()
 {
-    printf("%s\n", __func__);
+    // Set ip data
+    bzero(&ipv4Address, sizeof(ipv4Address));
+    ipv4Address.sin_family = AF_INET;
+    inet_pton(AF_INET, ip, &ipv4Address.sin_addr);
+    ipv4Address.sin_port = htons(port);
+
+    // Bind socket fd to ip
+    int ret = bind(socketFd, (struct sockaddr *)&ipv4Address, sizeof(ipv4Address));
+    if (-1 == ret)
+    {
+        printf("Error: Binding sockfd to ip failed! errno: %d\n", errno);
+        return -1;
+    }
     return 0;
 }
 
