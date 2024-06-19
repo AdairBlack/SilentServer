@@ -40,6 +40,18 @@ WebServer::SocketServer::SocketServer(char *ip_, int port_, int backlog_) : ip(i
     inet_pton(AF_INET, ip, &ipv4Address.sin_addr);
     ipv4Address.sin_port = htons(port);
 
+    // Set TCP receive buffer size
+    int recvBufSize = 4096;
+    int length = 0;
+    int retval = setsockopt(socketFd, SOL_SOCKET, SO_RCVBUF, &recvBufSize, sizeof(recvBufSize));
+    if (-1 == retval)
+    {
+        printf("Error: Set socket receive buffer size failed! errno: %d\n", errno);
+        return;
+    }
+    getsockopt(socketFd, SOL_SOCKET, SO_RCVBUF, &recvBufSize, (socklen_t *)&length);
+    printf("Receive buffer size: %d\n", length);
+
     // Bind socket fd to ip
     int ret = bind(socketFd, (struct sockaddr *)&ipv4Address, sizeof(ipv4Address));
     if (-1 == ret)
