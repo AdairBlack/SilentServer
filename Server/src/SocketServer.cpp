@@ -51,6 +51,18 @@ WebServer::SocketServer::SocketServer(char *ip_, int port_, int backlog_) : ip(i
     }
     printf("Receive buffer size: %d\n", recvBufSize);
 
+    // get socket name
+    struct sockaddr_in localAddr;
+    socklen_t addrLen = sizeof(localAddr);
+    retval = getsockname(socketFd, (struct sockaddr *)&localAddr, &addrLen);
+    if (-1 == retval)
+    {
+        printf("Error: Getting socket name failed! errno: %d\n", errno);
+        return;
+    }
+    printf("Local IP:   %s\n", inet_ntoa(localAddr.sin_addr));
+    printf("Local Port: %d\n", ntohs(localAddr.sin_port));
+
     // Bind socket fd to ip
     int ret = bind(socketFd, (struct sockaddr *)&ipv4Address, sizeof(ipv4Address));
     if (-1 == ret)
